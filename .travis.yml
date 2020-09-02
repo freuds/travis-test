@@ -1,0 +1,49 @@
+filter_secrets: false
+
+language: php
+
+dist: bionic
+
+os: linux
+
+git:
+  depth: false
+
+cache: pip
+
+env:
+  global:
+    - SERVICE_NAME=phenix-app
+    - CURRENT_BRANCH="${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}"
+    - AWS_ECR_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
+
+branches:
+  only:
+    - master
+    - develop
+    - /^release\/.*$/
+    - /^hotfix\/.*$/
+
+services:
+  - docker
+
+before_script:
+  - cp .env.dist .env
+  - pip install --user awscli
+  - export PATH=$PATH:$HOME/.local/bin
+  - aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
+
+#after_success:
+#  - cd .. && git clone https://${ACCESS_TOKEN}@github.com/wearephenix/phenix-devops.git && cd ${SERVICE_NAME}
+
+deploy:
+  - provider: script
+    script: bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI}
+    on:
+      branch: develop
+      condition: $TRAVIS_EVENT_TYPE = "push"
+  - provider: script
+    script: bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI}
+    on:
+      all_branches: true
+      condition: $TRAVIS_EVENT_TYPE = "push" && $CURRENT_BRANCH =~ ^release\/.*$
