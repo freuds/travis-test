@@ -9,7 +9,12 @@ fi
 if [[ $TRAVIS_BRANCH =~ ^release\/.*$ ]]; then
   IMAGE_TAG=release
 fi
-docker build -f ${TRAVIS_BUILD_DIR}/Dockerfile --no-cache --tag ${SERVICE_NAME} .
+
+echo "EVENT_TYPE=${TRAVIS_EVENT_TYPE})"
+echo "TRAVIS_BRANCH=${TRAVIS_BRANCH})"
+echo "TRAVIS_PULL_REQUEST_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH}"
+
+#docker build -f ${TRAVIS_BUILD_DIR}/Dockerfile --no-cache --tag ${SERVICE_NAME} .
 #docker tag ${SERVICE_NAME}:latest ${AWS_ECR_URI}/${SERVICE_NAME}:${IMAGE_TAG}
 #docker push ${AWS_ECR_URI}/${SERVICE_NAME}:${IMAGE_TAG}
 
