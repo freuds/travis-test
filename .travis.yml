@@ -1,6 +1,6 @@
 filter_secrets: false
 
-language: php
+language: generic
 
 dist: bionic
 
