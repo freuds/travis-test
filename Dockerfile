@@ -1,7 +1,5 @@
 ARG SOURCES_PATH=.
-ARG APP_ENV=prod
-ARG PARENT=078891766685.dkr.ecr.eu-west-1.amazonaws.com/phenix-php-symfony:$APP_ENV
-FROM $PARENT
+ARG APP_ENV=dev
 
 RUN apk add --update --no-cache \
     git \

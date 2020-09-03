@@ -39,14 +39,9 @@ before_script:
 deploy:
   - provider: script
     script: bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI}
-    skip_cleanup: true
+    cleanup: true
     on:
       all_branches: true
       condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH =~ ^(develop|release\/.*)$
-#  - provider: script
-#    script: bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI}
-#    skip_cleanup: true
-#    on:
-#      all_branches: true
-#      condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH =~ ^release\/.*$
+
 
