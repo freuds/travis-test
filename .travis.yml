@@ -50,5 +50,3 @@ deploy:
 #      all_branches: true
 #      condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH =~ ^release\/.*$
 
-#after_deploy:
-#  - mv .env .env.dist
