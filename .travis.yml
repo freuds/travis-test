@@ -16,7 +16,6 @@ env:
     - SERVICE_NAME=phenix-app
     - CURRENT_BRANCH="${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}"
     #- AWS_ECR_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
-    #- AWS_ECR_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
 
 branches:
   only:
@@ -40,15 +39,16 @@ before_script:
 deploy:
   - provider: script
     script: bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI}
+    skip_cleanup: true
     on:
-      branch: develop
-      condition: $TRAVIS_EVENT_TYPE = "push"
-
+      all_branches: true
+      condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH =~ ^(develop|release\/.*)$
 #  - provider: script
 #    script: bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI}
+#    skip_cleanup: true
 #    on:
 #      all_branches: true
-#      condition: $TRAVIS_EVENT_TYPE = "push" && $CURRENT_BRANCH =~ ^release\/.*$
+#      condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH =~ ^release\/.*$
 
-after_deploy:
-  - mv .env .env.dist
+#after_deploy:
+#  - mv .env .env.dist
