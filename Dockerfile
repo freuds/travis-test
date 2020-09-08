@@ -1,7 +1,6 @@
 ARG SOURCES_PATH=.
-ARG APP_ENV=prod
-ARG PARENT=078891766685.dkr.ecr.eu-west-1.amazonaws.com/phenix-php-symfony:$APP_ENV
-FROM $PARENT
+ARG APP_ENV=dev
+FROM php:7.3-alpine
 
 RUN apk add --update --no-cache \
     git \
@@ -30,9 +29,6 @@ RUN apk add --update --no-cache \
 # Fix for iconv error
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ gnu-libiconv
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
-
-ARG USER_ID=1000
-RUN usermod -u ${USER_ID} www-data
 
 COPY --chown=www-data:www-data . /srv/app
 
