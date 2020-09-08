@@ -53,4 +53,5 @@ deploy:
     on:
       all_branches: true
       condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH =~ ^(hotfix|release)\/[[:digit:]]+\.[[:digit:]]+(\.[[:digit:]]+)?$
+      
 
