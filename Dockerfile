@@ -35,8 +35,6 @@ ARG USER_ID=1000
 RUN usermod -u ${USER_ID} www-data
 
 COPY --chown=www-data:www-data . /srv/app
-COPY --chown=www-data:www-data ./app/config/security_prod.yml /srv/app/app/config/security.yml
-COPY --chown=www-data:www-data ./docker/phenix/php-ini-overrides.ini /etc/php7/conf.d
 
 WORKDIR /srv/app
 
