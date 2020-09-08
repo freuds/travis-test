@@ -24,8 +24,7 @@ branches:
   only:
     - master
     - develop
-    - /^release\/.*$/
-    - /^hotfix\/.*$/
+    - /^(release|hotfix)\/\d{1,2}(\.\d+)?(\.\d+)?$/
 
 services:
   - docker
@@ -53,4 +52,3 @@ deploy:
       all_branches: true
       condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH =~ ^(hotfix|release)\/[[:digit:]]+\.[[:digit:]]+(\.[[:digit:]]+)?$
       
-
