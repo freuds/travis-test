@@ -3,15 +3,12 @@
 SERVICE_NAME=$1
 AWS_ECR_URI=$2
 
-if [[ $TRAVIS_BRANCH = develop ]]; then
-  IMAGE_TAG=$TRAVIS_BRANCH
-fi
-if [[ $TRAVIS_BRANCH =~ ^release\/.*$ ]]; then
-  IMAGE_TAG=release
-fi
+IMAGE_TAG=$TRAVIS_BRANCH
 
 echo "EVENT_TYPE=${TRAVIS_EVENT_TYPE}"
 echo "TRAVIS_BRANCH=${TRAVIS_BRANCH}"
+echo "IMAGE_TAG=${IMAGE_TAG}"
+echo "TAG=${TAG}"
 echo "TRAVIS_PULL_REQUEST_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH}"
 
 #docker build -f ${TRAVIS_BUILD_DIR}/Dockerfile --no-cache --tag ${SERVICE_NAME} .
