@@ -24,7 +24,7 @@ branches:
   only:
     - master
     - develop
-    - /^(release|hotfix)\/\d{1,2}(\.\d+)?(\.\d+)?$/
+    - /^(hotfix|release)\/\d+(\.\d+)?(\.\d+)?$/
 
 services:
   - docker
@@ -41,16 +41,14 @@ before_script:
 deploy:
   - provider: script
     script: bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
-    edge: true
-    cleanup: true
+    skip_cleanup: true
     on:
       all_branches: true
       condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH = develop
   - provider: script
     script: bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
-    edge: true
-    cleanup: true
+    skip_cleanup: true
     on:
       all_branches: true
-      condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH =~ ^(hotfix|release)\/[[:digit:]]+\.[[:digit:]]+(\.[[:digit:]]+)?$
+      condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH =~ ^(hotfix|release)\/\d+(\.\d+)?(\.\d+)?$
       
