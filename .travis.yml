@@ -24,7 +24,7 @@ branches:
   only:
     - master
     - develop
-    - /^(hotfix|release)\/\d+(\.\d+)?(\.\d+)?$/
+    - /^(hotfix|release)\/[[:digit:]]+(\.[[:digit:]]+)?(\.[[:digit:]]+)?$/
 
 services:
   - docker
@@ -35,7 +35,12 @@ before_script:
   - export PATH=$PATH:$HOME/.local/bin
   #- aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
 
-#after_success:
+after_success:
+  - echo "EVENT_TYPE=${TRAVIS_EVENT_TYPE}"
+  - echo "TRAVIS_BRANCH=${TRAVIS_BRANCH}"
+  - echo "IMAGE_TAG=${IMAGE_TAG}"
+  - echo "TAG=${TAG}"
+  - echo "TRAVIS_PULL_REQUEST_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH}"
 #  - cd .. && git clone https://${ACCESS_TOKEN}@github.com/wearephenix/phenix-devops.git && cd ${SERVICE_NAME}
 
 deploy:
@@ -50,5 +55,5 @@ deploy:
     skip_cleanup: true
     on:
       all_branches: true
-      condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH =~ ^(hotfix|release)\/\d+(\.\d+)?(\.\d+)?$
+      condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH =~ ^(hotfix|release)\/[[:digit:]]+(\.[[:digit:]]+)?(\.[[:digit:]]+)?$
       

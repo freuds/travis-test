@@ -4,7 +4,7 @@ SERVICE_NAME=$1
 AWS_ECR_URI=$2
 TAG=$3
 
-# we get the value of TRAVIS_BRANCH to define IMAGE_TAG
+# TRAVIS_BRANCH can be : develop or release/x.x.x or hotfix/x.x.x
 if [[ $TRAVIS_BRANCH = develop ]]; then
   IMAGE_TAG=$TRAVIS_BRANCH
 else
