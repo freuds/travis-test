@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set +eu
+
 SERVICE_NAME=$1
 AWS_ECR_URI=$2
 TAG=$3
