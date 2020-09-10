@@ -4,7 +4,7 @@ SERVICE_NAME=$1
 AWS_ECR_URI=$2
 TAG=$3
 
-# we get the value of TRAVIS_BRANCH to define IMAGE_TAG
+# TRAVIS_BRANCH can be : develop or release/x.x.x or hotfix/x.x.x
 if [[ $TRAVIS_BRANCH = develop ]]; then
   IMAGE_TAG=$TRAVIS_BRANCH
 else
@@ -17,8 +17,12 @@ echo "IMAGE_TAG=${IMAGE_TAG}"
 echo "TAG=${TAG}"
 echo "TRAVIS_PULL_REQUEST_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH}"
 
-#docker build -f ${TRAVIS_BUILD_DIR}/Dockerfile --no-cache --tag ${SERVICE_NAME} .
+if docker build -f ${TRAVIS_BUILD_DIR}/Dockerfile --no-cache --tag ${SERVICE_NAME} .
+then
+  echo "tag"
+  echo "push"
+fi
+
 #docker tag ${SERVICE_NAME}:latest ${AWS_ECR_URI}/${SERVICE_NAME}:${IMAGE_TAG}
 #docker push ${AWS_ECR_URI}/${SERVICE_NAME}:${IMAGE_TAG}
 
-exit 0
