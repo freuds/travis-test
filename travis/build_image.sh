@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set +eu
+set -eu
 
 SERVICE_NAME=$1
 AWS_ECR_URI=$2
