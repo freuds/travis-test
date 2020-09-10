@@ -27,7 +27,7 @@ RUN apk add --update --no-cache \
        gd
 
 # Fix for iconv error
-RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ gnu-libiconv
+RUN apk addd --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ gnu-libiconv
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 COPY --chown=www-data:www-data . /srv/app
