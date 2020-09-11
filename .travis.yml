@@ -1,0 +1,63 @@
+filter_secrets: false
+
+language: generic
+
+dist: bionic
+
+os: linux
+
+git:
+  depth: false
+
+cache: pip
+
+addons:
+  apt:
+    packages:
+      - python3-pip
+      - python3-setuptools
+      - python3-wheel
+
+env:
+  global:
+    - SERVICE_NAME=phenix-app
+    - CURRENT_BRANCH="${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}"
+    - TAG="${CURRENT_BRANCH/release\/}" # remove release's prefix to keep only X.X.X if exists
+    - TAG="${TAG/hotfix\/}" # remove hotfix's prefix to keep only X.X.X if exists
+    #- AWS_ECR_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
+    - AWS_ECR_URI=freuds2k
+
+branches:
+  only:
+    - master
+    - develop
+    - /^(hotfix|release)\/[[:digit:]]+(\.[[:digit:]]+)?(\.[[:digit:]]+)?$/
+
+services:
+  - docker
+
+before_script:
+  - cp .env.dist .env
+  - pip3 install awscli --upgrade
+  - export PATH=$PATH:$HOME/.local/bin
+  #- aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
+
+script:
+  - bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
+
+#after_success:
+
+#deploy:
+#  - provider: script
+#    script: bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
+#    skip_cleanup: true
+#    on:
+#      all_branches: true
+#      condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH = develop
+#  - provider: script
+#    script: bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
+#    skip_cleanup: true
+#    on:
+#      all_branches: true
+#      condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH =~ ^(hotfix|release)\/[[:digit:]]+(\.[[:digit:]]+)?(\.[[:digit:]]+)?$
+#
