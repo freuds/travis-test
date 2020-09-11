@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euv
+set -eux
 
 SERVICE_NAME=$1
 AWS_ECR_URI=$2
@@ -22,12 +22,9 @@ then
   echo "TAG=${TAG}"
   echo "TRAVIS_PULL_REQUEST_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH}"
 
-  if docker build -f ${TRAVIS_BUILD_DIR}/Dockerfile --no-cache --tag ${SERVICE_NAME} .
-  then
-    echo "tag"
-    echo "push"
-  fi
-
+  docker build -f ${TRAVIS_BUILD_DIR}/Dockerfile --no-cache --tag ${SERVICE_NAME} . || exit 1
+  echo "tag"
+  echo "push"
   #docker tag ${SERVICE_NAME}:latest ${AWS_ECR_URI}/${SERVICE_NAME}:${IMAGE_TAG}
   #docker push ${AWS_ECR_URI}/${SERVICE_NAME}:${IMAGE_TAG}
 
