@@ -44,12 +44,6 @@ script:
   - bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
 
 #after_success:
-#  - echo "EVENT_TYPE=${TRAVIS_EVENT_TYPE}"
-#  - echo "TRAVIS_BRANCH=${TRAVIS_BRANCH}"
-#  - echo "IMAGE_TAG=${IMAGE_TAG}"
-#  - echo "TAG=${TAG}"
-#  - echo "TRAVIS_PULL_REQUEST_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH}"
-#  - cd .. && git clone https://${ACCESS_TOKEN}@github.com/wearephenix/phenix-devops.git && cd ${SERVICE_NAME}
 
 #deploy:
 #  - provider: script
