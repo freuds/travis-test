@@ -9,7 +9,12 @@ os: linux
 git:
   depth: false
 
-cache: pip3
+cache: pip
+
+addons:
+  apt:
+    packages:
+      - python3-pip
 
 env:
   global:
@@ -31,7 +36,7 @@ services:
 
 before_script:
   - cp .env.dist .env
-  - pip3.7 install --user awscli
+  - pip3 install --user awscli
   - export PATH=$PATH:$HOME/.local/bin
   #- aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
 
