@@ -1,6 +1,6 @@
 ARG SOURCES_PATH=.
 ARG APP_ENV=dev
-FROM php:7.3-alpin
+FROM php:7.3-alpine
 
 RUN apk add --update --no-cache \
     git
