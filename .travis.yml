@@ -11,6 +11,13 @@ git:
 
 cache: pip
 
+addons:
+  apt:
+    packages:
+      - python3-pip
+      - python3-setuptools
+      - python3-wheel
+
 env:
   global:
     - SERVICE_NAME=phenix-app
@@ -31,29 +38,26 @@ services:
 
 before_script:
   - cp .env.dist .env
-  - pip install --user awscli
+  - pip3 install awscli --upgrade
   - export PATH=$PATH:$HOME/.local/bin
   #- aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
 
-#after_success:
-#  - echo "EVENT_TYPE=${TRAVIS_EVENT_TYPE}"
-#  - echo "TRAVIS_BRANCH=${TRAVIS_BRANCH}"
-#  - echo "IMAGE_TAG=${IMAGE_TAG}"
-#  - echo "TAG=${TAG}"
-#  - echo "TRAVIS_PULL_REQUEST_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH}"
-#  - cd .. && git clone https://${ACCESS_TOKEN}@github.com/wearephenix/phenix-devops.git && cd ${SERVICE_NAME}
+script:
+  - bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
 
-deploy:
-  - provider: script
-    script: bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
-    skip_cleanup: true
-    on:
-      all_branches: true
-      condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH = develop
-  - provider: script
-    script: bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
-    skip_cleanup: true
-    on:
-      all_branches: true
-      condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH =~ ^(hotfix|release)\/[[:digit:]]+(\.[[:digit:]]+)?(\.[[:digit:]]+)?$
-      
+#after_success:
+
+#deploy:
+#  - provider: script
+#    script: bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
+#    skip_cleanup: true
+#    on:
+#      all_branches: true
+#      condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH = develop
+#  - provider: script
+#    script: bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
+#    skip_cleanup: true
+#    on:
+#      all_branches: true
+#      condition: $TRAVIS_EVENT_TYPE = "push" && $TRAVIS_BRANCH =~ ^(hotfix|release)\/[[:digit:]]+(\.[[:digit:]]+)?(\.[[:digit:]]+)?$
+#
