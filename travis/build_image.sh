@@ -28,10 +28,3 @@ then
     docker push ${AWS_ECR_URI}/${SERVICE_NAME}:${IMAGE_TAG}
   fi
 fi
-
-
-#docker build -f ${TRAVIS_BUILD_DIR}/Dockerfile --no-cache --tag ${SERVICE_NAME} .
-#docker tag ${SERVICE_NAME}:latest ${AWS_ECR_URI}/${SERVICE_NAME}:${IMAGE_TAG}
-#docker push ${AWS_ECR_URI}/${SERVICE_NAME}:${IMAGE_TAG}
-
-exit 0
