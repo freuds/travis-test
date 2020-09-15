@@ -25,6 +25,6 @@ then
   if [[ "${TRAVIS_BRANCH}" = "master" ]]
   then
     docker tag ${SERVICE_NAME}:latest ${AWS_ECR_URI}/${SERVICE_NAME}:latest
-    docker push ${AWS_ECR_URI}/${SERVICE_NAME}:${IMAGE_TAG}
+    docker push ${AWS_ECR_URI}/${SERVICE_NAME}:latest
   fi
 fi
