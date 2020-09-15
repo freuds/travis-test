@@ -1,6 +1,6 @@
 filter_secrets: false
 
-language: generic
+language: php
 
 dist: bionic
 
@@ -20,12 +20,12 @@ addons:
 
 env:
   global:
-    - SERVICE_NAME=phenix-app
+    - SERVICE_NAME=fred-app
     - CURRENT_BRANCH="${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}"
     - TAG="${CURRENT_BRANCH/release\/}" # remove release's prefix to keep only X.X.X if exists
     - TAG="${TAG/hotfix\/}" # remove hotfix's prefix to keep only X.X.X if exists
-    #- AWS_ECR_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
     - AWS_ECR_URI=freuds2k
+#    - AWS_ECR_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
 
 branches:
   only:
@@ -36,16 +36,18 @@ branches:
 services:
   - docker
 
-before_script:
+install:
   - cp .env.dist .env
   - pip3 install awscli --upgrade
-  - export PATH=$PATH:$HOME/.local/bin
-  #- aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
 
 script:
+  - export PATH=$PATH:$HOME/.local/bin
+#  - aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
 
 #after_success:
+#  - cd .. && git clone https://${ACCESS_TOKEN}@github.com/wearephenix/phenix-devops.git && cd ${SERVICE_NAME}
 
 #deploy:
 #  - provider: script
