@@ -43,7 +43,7 @@ install:
 script:
   - export PATH=$PATH:$HOME/.local/bin
 #  - aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
-  - echo '$DOCKER_PASSWORD' | docker login -u '$DOCKER_USERNAME' --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - bash travis/build_image.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
 
 #after_success:
