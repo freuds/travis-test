@@ -10,7 +10,7 @@ TAG=$3
 if [[ "${TRAVIS_PULL_REQUEST}" = "false" ]]
 then
 
-  if [[ "${$TRAVIS_BRANCH}" =~ ^(develop|master)$ ]]; then
+  if [[ "${TRAVIS_BRANCH}" =~ ^(develop|master)$ ]]; then
     IMAGE_TAG=$TRAVIS_BRANCH
   else
     IMAGE_TAG=$TAG
