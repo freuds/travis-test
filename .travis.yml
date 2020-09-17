@@ -45,11 +45,11 @@ install:
 script:
   - export PATH=$PATH:$HOME/.local/bin
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - bash travis/build.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
+  - bash ./travis/build.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
 
 deploy:
   - provider: script
-    script: bash travis/deploy.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
+    script: bash ./travis/deploy.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
     skip_cleanup: true
     on:
       all_branches: true
