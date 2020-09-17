@@ -36,8 +36,6 @@ RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/co
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 ARG USER_ID=1000
-RUN usermod -u ${USER_ID} www-data
-
 COPY --chown=www-data:www-data . /srv/app
 
 WORKDIR /srv/app
