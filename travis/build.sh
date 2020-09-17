@@ -9,6 +9,7 @@ TAG=$3
 
 #if [[ "${TRAVIS_PULL_REQUEST}" = "false" ]]
 #then
+  TRAVIS_BRANCH=develop
 
   IMAGE_TAG="${TAG:-$TRAVIS_BRANCH}"
   docker build -f ${TRAVIS_BUILD_DIR}/docker/phenix/Dockerfile --no-cache --tag ${SERVICE_NAME} .
