@@ -11,6 +11,9 @@ git:
 
 cache: pip
 
+php:
+  - 7.1
+
 addons:
   apt:
     packages:
@@ -25,7 +28,6 @@ env:
     - TAG="${CURRENT_BRANCH/release\/}" # remove release's prefix to keep only X.X.X if exists
     - TAG="${TAG/hotfix\/}" # remove hotfix's prefix to keep only X.X.X if exists
     - AWS_ECR_URI=freuds2k
-#    - AWS_ECR_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
 
 branches:
   only:

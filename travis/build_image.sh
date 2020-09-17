@@ -10,14 +10,11 @@ TAG=$3
 if [[ "${TRAVIS_PULL_REQUEST}" = "false" ]]
 then
 
-  echo "EVENT_TYPE=${TRAVIS_EVENT_TYPE}"
-  echo "TRAVIS_BRANCH=${TRAVIS_BRANCH}"
-  echo "IMAGE_TAG=${IMAGE_TAG}"
-  echo "TAG=${TAG}"
-  echo "TRAVIS_PULL_REQUEST_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH}"
-
-  # at this point TRAVIS_BRANCH could be only : master or develop or release/x.x.x or hotfix/x.x.x
-  IMAGE_TAG=$(echo ${TRAVIS_BRANCH} | sed s#\/#-#)
+  if [[ "${TRAVIS_BRANCH}" =^ '^(develop|master)$']]; then
+    IMAGE_TAG=${TRAVIS_BRANCH}
+  else
+    IMAGE_TAG=${TAG}
+  fi
   docker build -f ${TRAVIS_BUILD_DIR}/docker/phenix/Dockerfile --no-cache --tag ${SERVICE_NAME} .
   docker tag ${SERVICE_NAME}:latest ${AWS_ECR_URI}/${SERVICE_NAME}:${IMAGE_TAG}
   docker push ${AWS_ECR_URI}/${SERVICE_NAME}:${IMAGE_TAG}
