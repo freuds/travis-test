@@ -39,28 +39,10 @@ ARG USER_ID=1000
 RUN usermod -u ${USER_ID} www-data
 
 COPY --chown=www-data:www-data . /srv/app
-#COPY --chown=www-data:www-data ./app/config/security_prod.yml /srv/app/app/config/security.yml
-COPY --chown=www-data:www-data ./docker/phenix/php-ini-overrides.ini /etc/php7/conf.d
 
 WORKDIR /srv/app
 
 USER www-data
-
-## https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
-#ENV COMPOSER_ALLOW_SUPERUSER 1
-#ENV COMPOSER_MEMORY_LIMIT -1
-#
-## TODO: Change and automate Github Token usage
-#ARG GITHUB_TOKEN='17b89f14189b3b0379db3ef585b68db32b34d87a'
-#ARG COMPOSER_ARGS=''
-#RUN composer config -g github-oauth.github.com $GITHUB_TOKEN \
-#    && composer global require "hirak/prestissimo:^0.3" --prefer-dist --no-progress --no-suggest -o -a \
-#    && composer install ${COMPOSER_ARGS} \
-#    && composer global remove hirak/prestissimo \
-#    && npm install \
-#    && npm run translation \
-#    && yarn encore dev \
-#    && ./bin/console translation:download
 
 EXPOSE 9000
 
