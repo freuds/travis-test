@@ -47,6 +47,11 @@ script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - bash ./travis/build.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
 
+after_success:
+  - openssl aes-256-cbc -K $encrypted_407b3ff8019b_key -iv $encrypted_407b3ff8019b_iv -in ./travis/id_phenix_travis.enc -out ./travis/id_phenix_travis -d
+  - ssh-agent -s ; chmod 600 ./travis/id_phenix_travis ; ssh-add ./travis/id_phenix_travis
+  - cd .. && git clone git@github.com/wearephenix/phenix-devops.git && cd ..
+
 deploy:
   - provider: script
     script: bash ./travis/deploy.sh ${SERVICE_NAME} ${AWS_ECR_URI} ${TAG}
